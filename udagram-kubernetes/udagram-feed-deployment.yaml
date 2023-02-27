@@ -14,15 +14,21 @@ spec:
       labels:
         app: udagram-feed-app
     spec:
+      volumes:
+        - name: aws-secret
+          secret:
+            secretName: aws-secret   
       containers:
       - name: udagram-api-feed
-        image: emanfawzy499/udagram-api-feed:v6
+        image: emanfawzy499/udagram-api-feed:v9
         envFrom:
         - configMapRef:
             name: env-configmap
         - secretRef:
-            name: env-secret     
-        - secretRef:
-            name: aws-secret       
+            name: env-secret
+        volumeMounts:
+          - name: aws-secret
+            readOnly: true     
+            mountPath: "/root/.aws/"
         ports:
-          - containerPort: 8080              
+          - containerPort: 8080           

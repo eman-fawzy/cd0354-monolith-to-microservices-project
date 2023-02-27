@@ -14,15 +14,26 @@ spec:
       labels:
         app: udagram-user-app
     spec:
+      volumes:
+        - name: aws-secret
+          secret:
+            secretName: aws-secret     
       containers:
       - name: udagram-api-user
         image: emanfawzy499/udagram-api-user:v1
+        resources:
+          limits:
+            cpu: "500m"
+          requests:
+            cpu: "200m"
         envFrom:
         - configMapRef:
             name: env-configmap
         - secretRef:
             name: env-secret     
-        - secretRef:
-            name: aws-secret      
+        volumeMounts:
+          - name: aws-secret
+            readOnly: true     
+            mountPath: "/root/.aws/"    
         ports:
         - containerPort: 8080
