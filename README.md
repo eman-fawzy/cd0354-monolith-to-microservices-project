@@ -84,3 +84,37 @@ Launch the frontend app locally.
     ```
 4. `set_env.sh` is really for your backend application. Frontend applications have a different notion of how to store configurations. Configurations for the application endpoints can be configured inside of the `environments/environment.*ts` files.
 5. In `set_env.sh`, environment variables are set with `export $VAR=value`. Setting it this way is not permanent; every time you open a new terminal, you will have to run `set_env.sh` to reconfigure your environment variables. To verify if your environment variable is set, you can check the variable with a command like `echo $POSTGRES_USERNAME`.
+
+
+# Run Local environment
+
+Project use travis.yml to build and upload the images to docker registery
+
+# Before running the project, should create cluster first on aws
+1-Create EKS Cluster
+
+# eksctl create cluster --name myCluster --version 1.23 --region us-east-1  --zones=us-east-1a,us-east-1b  --without-nodegroup
+ 
+# eksctl create nodegroup --cluster=myCluster  --region=us-east-1 \
+                        --name=eksdemo1-ng-public2  --node-type=m5.large \
+                        --nodes=2 \
+                        --nodes-min=2 \
+                        --nodes-max=4 \
+                        --node-volume-size=20 \
+                        --ssh-access \
+                        --ssh-public-key=kube-demo \
+                        --managed \
+                        --asg-access \
+                        --external-dns-access \
+                        --alb-ingress-access
+2-create aws s3
+
+3-create aws rds or local postgress database
+
+# after creating a cluster and aws s3 and database 
+cd to the root folder and execute below command to run the project
+  # docker-compose up
+
+# Shutdown deployment
+to shutdown deployment run below command
+   # docker-compose down
